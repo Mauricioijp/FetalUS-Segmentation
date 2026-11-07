@@ -9,8 +9,8 @@ import torch
 import torch.nn as nn
 from torch.utils.data import Dataset, DataLoader
 
-IMG_DIR = Path("FRUS")
-MASK_DIR = Path("Masks")
+IMG_DIR = Path("Week1/FRUS")
+MASK_DIR = Path("Week1/Masks")
 
 
 # -------------------------
@@ -270,43 +270,94 @@ for epoch in range(EPOCHS):
 
     if val_dice > best_val_dice:
         best_val_dice = val_dice
-        torch.save(model.state_dict(), "unet_best.pth")
+        torch.save(model.state_dict(), "unet_best271026.pth")
 
 print("Best validation dice:", best_val_dice)
-print("Model saved in unet_best.pth")
+print("Model saved in unet_best271026.pth")
 
 
-########################################################
+# ########################################################
 
-model.load_state_dict(
-    torch.load("unet_best.pth", map_location=DEVICE)
-)
-model.eval()
+# model.load_state_dict(
+#     torch.load("unet_best.pth", map_location=DEVICE)
+# )
+# model.eval()
 
-image, mask = val_ds[0]
+# image, mask = val_ds[0]
 
-with torch.no_grad():
-    logits = model(image.unsqueeze(0).to(DEVICE))
-    probs = torch.sigmoid(logits)
-    pred = (probs > 0.5).float()
+# with torch.no_grad():
+#     logits = model(image.unsqueeze(0).to(DEVICE))
+#     probs = torch.sigmoid(logits)
+#     pred = (probs > 0.5).float()
 
-image = image.squeeze().cpu().numpy()
-mask = mask.squeeze().cpu().numpy()
-pred = pred.squeeze().cpu().numpy()
+# image = image.squeeze().cpu().numpy()
+# mask = mask.squeeze().cpu().numpy()
+# pred = pred.squeeze().cpu().numpy()
 
-fig, axes = plt.subplots(1, 3, figsize=(15, 5))
+# fig, axes = plt.subplots(1, 3, figsize=(15, 5))
 
-axes[0].imshow(image, cmap="gray")
-axes[0].set_title("Imagen original")
+# axes[0].imshow(image, cmap="gray")
+# axes[0].set_title("Imagen original")
 
-axes[1].imshow(mask, cmap="gray")
-axes[1].set_title("Máscara real")
+# axes[1].imshow(mask, cmap="gray")
+# axes[1].set_title("Máscara real")
 
-axes[2].imshow(pred, cmap="gray")
-axes[2].set_title("Predicción")
+# axes[2].imshow(pred, cmap="gray")
+# axes[2].set_title("Predicción")
 
-for ax in axes:
-    ax.axis("off")
+# for ax in axes:
+#     ax.axis("off")
 
-plt.tight_layout()
-plt.show()
+# plt.tight_layout()
+# plt.show()
+
+# Cargar los pesos entrenados
+# model.load_state_dict(
+#     torch.load("unet_best271026.pth", map_location=DEVICE)
+# )
+# model.eval()
+
+# # Cantidad de imágenes que queremos visualizar
+# num_images = min(4, len(val_ds))
+
+# fig, axes = plt.subplots(
+#     num_images, 3,
+#     figsize=(15, 5 * num_images)
+# )
+
+# # Si solo mostramos una imagen, mantener formato de matriz
+# if num_images == 1:
+#     axes = axes.reshape(1, 3)
+
+# for i in range(num_images):
+#     # Obtener imagen y máscara real
+#     image, mask = val_ds[i]
+
+#     # Predecir la máscara
+#     with torch.no_grad():
+#         logits = model(image.unsqueeze(0).to(DEVICE))
+#         probs = torch.sigmoid(logits)
+#         pred = (probs > 0.5).float()
+
+#     # Convertir tensores a arrays para visualizar
+#     image_np = image.squeeze().cpu().numpy()
+#     mask_np = mask.squeeze().cpu().numpy()
+#     pred_np = pred.squeeze().cpu().numpy()
+
+#     # Imagen original
+#     axes[i, 0].imshow(image_np, cmap="gray")
+#     axes[i, 0].set_title(f"Imagen original {i + 1}")
+
+#     # Máscara real
+#     axes[i, 1].imshow(mask_np, cmap="gray")
+#     axes[i, 1].set_title("Máscara real")
+
+#     # Predicción del modelo
+#     axes[i, 2].imshow(pred_np, cmap="gray")
+#     axes[i, 2].set_title("Predicción U-Net")
+
+#     for j in range(3):
+#         axes[i, j].axis("off")
+
+# plt.tight_layout()
+# plt.show()
