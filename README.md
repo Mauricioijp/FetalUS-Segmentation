@@ -10,6 +10,18 @@ The main objective is to develop a model capable of identifying and segmenting r
 
 The project follows an iterative development approach, covering dataset preparation, model implementation, training, and evaluation.
 
+## Dataset and Image Acquisition
+
+### Image Acquisition
+
+The dataset consists of images of a fetus-shaped phantom submerged in another phantom with a different concentration.
+
+### Image Annotation
+
+Each ultrasound image is associated with a corresponding binary segmentation mask.
+
+The masks represent the anatomical structures of interest and serve as ground-truth references during model training.
+
 ## Methodology
 
 The current implementation is based on the following workflow:
